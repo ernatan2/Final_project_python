@@ -4,7 +4,7 @@ import time
 SERVER_ADDRESS = '127.0.0.1' , 54321
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-def file_hundle():
+def file_handle():
     with open('status.txt', 'r') as f:
         try:
             station_number = int(f.readline())
@@ -25,12 +25,14 @@ def file_hundle():
             exit()
         return status
 
+
+
 try:
     client_socket.connect(SERVER_ADDRESS)
     print("connected to: {}" .format(SERVER_ADDRESS[0]))
 
     while True:
-        status_list = file_hundle()
+        status_list = file_handle()
         status = ' '.join([str(elem) for elem in status_list])
         massege_data = status.encode('utf8') 
         client_socket.send(massege_data)
@@ -39,7 +41,7 @@ try:
 
         response_data = client_socket.recv(1024)
         response_text = response_data.decode('utf-8')
-        print("Response", response_text)
+        print("Response:\n", response_text)
         time.sleep(10)
 
 
@@ -51,12 +53,4 @@ except Exception as e:
     print("An error occured: {}" .format(e))
 
 finally:
-    client_socket.close()
-   
-
-
-    
-    
-    
-    
-    
+    client_socket.close()   
